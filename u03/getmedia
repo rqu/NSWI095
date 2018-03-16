@@ -1,0 +1,34 @@
+#!/bin/sh
+
+getmedia_stdin() {
+	grep -Eio "https?://[^\"#'>[:cntrl:][:space:]]*"
+}
+
+getmedia() {
+	if [ -n "$1" ]
+	then getmedia_stdin < "$1"
+	else getmedia_stdin
+	fi
+}
+
+case "$1" in
+	--help)
+		echo "getmedia [-i|-s] [<FILE>]"
+		echo "  -i   Images only"
+		echo "  -s   Sound only"
+		echo "FILE   HTML document to be scanned (default stdin)"
+		;;
+	--)
+		getmedia "$2"
+		;;
+	-i)
+		getmedia "$2" | grep -Ei '\.(jpg|png|svg)$'
+		;;
+	-s)
+		getmedia "$2" | grep -Ei '\.(wav|mp3|ogg)$'
+		;;
+	*)
+		getmedia "$1"
+		;;
+esac
+
