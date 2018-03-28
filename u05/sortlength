@@ -1,0 +1,14 @@
+#!/bin/bash
+
+IFS=$'\t'
+
+exec < countrycodes_en.csv # pochopil jsem zadani?
+
+while read name other
+do
+	# ${#name} funguje jen v bashi
+	# v jinych shellech je potreba nahradit za
+	# `echo -n "$name" | wc -c`
+	# coz je pomalejsi a nerozumi unicodu
+	echo "${#name}$IFS$name$IFS$other"
+done | sort -n | cut -f2,3,4,5,6
