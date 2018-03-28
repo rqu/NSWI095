@@ -1,0 +1,13 @@
+#!/bin/sh
+
+[ $# -ne 1 ] && echo "Usage: $0 <filename>" >&2 && exit
+file="$1"
+
+colname="Weight"
+colnumber=`./colnumbers "$1" | sed "s/^ *\([0-9]*\)\t$colname$/\1/;t;d"`
+
+valid_weights="`cut -d';' -f"$colnumber" "$file" | grep -E '^[0-9]+$'`"
+num_valid_weights=`echo "$valid_weights" | wc -l`
+
+echo $(((`echo -n "$valid_weights" | tr '\n' '+'`)/num_valid_weights))
+

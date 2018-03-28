@@ -1,0 +1,12 @@
+#!/bin/sh
+
+[ $# -ne 1 ] && echo "Usage: $0 <filename>" >&2 && exit
+file="$1"
+
+IFS=';'
+
+for colname in `head -n 1 "$file"`
+do
+	echo "$colname"
+done | tr -d '"' | cat -n
+
