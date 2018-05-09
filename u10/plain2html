@@ -1,0 +1,22 @@
+#!/bin/sed -f
+
+:start
+$ b last
+N
+/[^\n]$/ b start
+:last
+
+s|[[:space:]\n][[:space:]\n]*| |g
+s|^# |#|
+s|^ ||
+s| $||
+
+s|&|&amp;|g
+s|<|&lt;|g
+s|>|&gt;|g
+
+s|_\([^_ ]*\)_|<emph>\1</emph>|g
+
+s|^[^#].*|<p>\0</p>|
+s|^#\(.*\)|<h1>\1</h1>|
+
